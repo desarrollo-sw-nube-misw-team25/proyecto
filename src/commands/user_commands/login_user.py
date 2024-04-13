@@ -12,7 +12,7 @@ class LoginUser(BaseCommand):
     self.password = password
 
   def execute(self):
-    if(self.email == None or len(self.email) == 0 or self.password == None or len(self.password) == 0):
+    if(self.email == None or self.verify_object_valid(self.email)):
       raise InvalidUsernameOrPassword()
     user = User.query.filter_by(email=self.email).first()
     if user and not user.check_password(self.password):

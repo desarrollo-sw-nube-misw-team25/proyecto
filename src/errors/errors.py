@@ -9,3 +9,9 @@ class InvalidUsernameOrPassword(ApiError):
 class Unauthorized(ApiError):
     code = 401
     description = "Unauthorized"
+
+class BadRequestApi(ApiError):
+    code = 401
+    description = "Bad request"
+    def __init__(self, description) -> None:
+        self.description = description
