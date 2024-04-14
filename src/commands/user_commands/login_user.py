@@ -7,14 +7,16 @@ from src.models.user_model import User
 
 
 class LoginUser(BaseCommand):
-  def __init__(self, username, password) -> None:
-    self.username = username
-    self.password = password
+    def __init__(self, username, password) -> None:
+        self.username = username
+        self.password = password
 
-  def execute(self):
-    if(self.email == None or self.verify_object_valid(self.email)):
-      raise InvalidUsernameOrPassword()
-    user = User.query.filter_by(email=self.email).first()
-    if user and not user.check_password(self.password):
-      raise Unauthorized()
-    return create_access_token(identity=self.email, expires_delta=timedelta(hours=1))
+    def execute(self):
+        if self.email == None or self.verify_object_valid(self.email):
+            raise InvalidUsernameOrPassword()
+        user = User.query.filter_by(email=self.email).first()
+        if user and not user.check_password(self.password):
+            raise Unauthorized()
+        return create_access_token(
+            identity=self.email, expires_delta=timedelta(hours=1)
+        )
