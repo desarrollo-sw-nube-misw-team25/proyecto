@@ -7,7 +7,7 @@ class Video(db.Model):
     id = db.Column(db.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     filename = db.Column(db.String(255), nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    status = db.Column(db.Enum('uploaded', 'processed', name='status_types'), default='uploaded')
+    status = db.Column(db.Enum('uploaded', 'processed', 'deleted', name='status_types'), default='uploaded')
 
     def __repr__(self):
         return '<Video %r>' % {self.filename}
