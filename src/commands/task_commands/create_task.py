@@ -40,4 +40,3 @@ def create_task():
             # Log the error
             print("System", f"Error processing video {video.id}: {e}")
             continue  # continue processing the next video
-

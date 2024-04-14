@@ -35,7 +35,9 @@ def post_task():
 @jwt_required()
 def get_all_task():
     user_id = get_jwt_identity()
-    tasks = get_all_tasks(user_id)
+    max_results = request.args.get('max', type=int)
+    order = request.args.get('order', type=int, default=0)
+    tasks = get_all_tasks(max_results, order)
     return tasks, 200
 
 
@@ -50,9 +52,9 @@ def get_task(id_task):
     user_id = get_jwt_identity()
     task = get_task_id(user_id, id_task)
     if task:
-        return task, 200
+        return jsonify(task), 200
     else:
-        return {"message": "Task not found"}, 404
+        return jsonify({"message": "Task not found"}), 404
 
 
 '''
