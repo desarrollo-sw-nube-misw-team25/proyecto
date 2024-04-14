@@ -10,7 +10,7 @@ class RegisterUser(BaseCommand):
         self.data = user_info
 
     def execute(self):
-        if "username" not in self.data or self.verify_object_valid(
+        if "username" not in self.data or self.verify_if_none_empty(
             self.data["username"]
         ):
             raise BadRequestApi("Username is invalid")
@@ -32,11 +32,11 @@ class RegisterUser(BaseCommand):
         new_user.set_password(self.data["password1"])
         db.session.add(new_user)
         db.session.commit()
-        return new_user
+        return self.map_user_to_dict(new_user)
 
     def verify_email(self):
         # Regular expression for validating an Email
-        email_regex = r"^[a-z0-9]+[\._]?[a-z0-9]+@\w+[.]\w+$"
+        email_regex = r"^[a-z0-9]+[\._]?[a-z0-9]+@[a-z0-9]+\.[a-z0-9]+(\.[a-z0-9]+)*$"
 
         # Retrieve the email from data
         email = self.data.get("email")
@@ -69,3 +69,6 @@ class RegisterUser(BaseCommand):
             return True
         else:
             return False
+
+    def map_user_to_dict(self, user: User):
+        return {"id": user.id, "username": user.username, "email": user.email}
