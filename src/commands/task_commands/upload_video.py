@@ -1,7 +1,7 @@
 from src.commands.base_command import BaseCommand
 from flask_jwt_extended import create_access_token
 from datetime import timedelta
-from src.app import db
+from src.extensions import db
 
 from src.errors.errors import InvalidUsernameOrPassword, Unauthorized
 from src.models.video_model import Video

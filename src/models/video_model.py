@@ -1,5 +1,5 @@
 import uuid
-from app import db, bcrypt
+from src.extensions import db
 from datetime import datetime
 
 

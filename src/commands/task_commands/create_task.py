@@ -1,7 +1,7 @@
 import os
 
-from src.app import celery
-from src.app import db
+
+from src.extensions import db,celery
 import subprocess
 from src.models.video_model import Video
 

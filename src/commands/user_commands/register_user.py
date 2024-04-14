@@ -2,7 +2,7 @@ import re
 from src.commands.base_command import BaseCommand
 from src.errors.errors import BadRequestApi
 from src.models.user_model import User
-from src.app import db
+from src.extensions import db
 
 
 class RegisterUser(BaseCommand):

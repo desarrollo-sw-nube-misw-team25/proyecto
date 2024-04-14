@@ -1,10 +1,9 @@
 from flask import jsonify
 
-from src.app import celery
-from src.app import db
+from src.extensions import celery, db
 import subprocess
 from src.models.video_model import Video
-def delete_task(user_id, id_task):
+def delete_task_id(user_id, id_task):
     # Query the database for the video linked to the given task ID
     video = Video.query.filter_by(task_id=id_task).first()
 

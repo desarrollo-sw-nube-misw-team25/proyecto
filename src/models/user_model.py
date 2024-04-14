@@ -1,5 +1,5 @@
 import uuid
-from app import db, bcrypt
+from src.extensions import db, bcrypt
 
 
 class User(db.Model):
