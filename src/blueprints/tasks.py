@@ -4,6 +4,7 @@ from ..commands.task_commands.create_task import create_task
 from ..commands.task_commands.get_all_tasks import get_all_tasks
 from ..commands.task_commands.get_task import get_task_id
 from ..commands.task_commands.delete_task import delete_task_id
+from src.commands.task_commands.upload_video import UploadVideo
 import os
 import uuid
 from datetime import datetime
@@ -106,8 +107,8 @@ def create_task():
     # The initial status of the video
     status = 'uploaded'
 
-    # TODO: Save to data base
-    # Example: create_video_task_db(video_id, filename, timestamp, status)
+    # Save to data base
+    stored_video = UploadVideo().execute()
 
     # Return confirmation message
     return jsonify({
