@@ -19,8 +19,10 @@ def get_all_tasks(max_results=None, order=0):
             query = query.limit(max_results)
 
         videos = query.all()
-        tasks_info = [{'id': video.task_id, 'state': video.state, 'path': video.path} for video in videos]
+        tasks_info = [{'id': video.id, 'state': video.status, 'filename': video.filename, 'timestamp': video.timestamp} for video in videos]
 
         return jsonify(tasks_info)
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        response = jsonify({'error': str(e)})
+        response.status_code = 500
+        return response
