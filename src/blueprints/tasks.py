@@ -35,7 +35,9 @@ def post_task():
 @jwt_required()
 def get_all_task():
     user_id = get_jwt_identity()
-    tasks = get_all_tasks(user_id)
+    max_results = request.args.get('max', type=int)
+    order = request.args.get('order', type=int, default=0)
+    tasks = get_all_tasks(max_results, order)
     return tasks, 200
 
 
