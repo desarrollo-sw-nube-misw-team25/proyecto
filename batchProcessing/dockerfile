@@ -6,9 +6,9 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-COPY videoProcessing.sh /app/videoProcessing.sh
+COPY /batchProcessing/videoProcessing.sh /app/videoProcessing.sh
 
-COPY idrl.jpg  /app/idrl.jpg
+COPY /batchProcessing/idrl.jpg  /app/idrl.jpg
 
 ENTRYPOINT ["./videoProcessing.sh"]
 
