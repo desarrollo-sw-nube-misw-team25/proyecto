@@ -9,7 +9,7 @@ app = Celery('video_processing', backend='redis://localhost', broker='redis://lo
 def process_video(video_path):
     
     try:    
-        subprocess.run(['docker', 'run', '-v', f'{video_path}:/app/input', 'batch-processing', '/app/input/pruebaVideo.mp4'], check=True)
+        subprocess.run(['sudo', 'docker', 'run', '-v', f'{video_path}:/app/input', 'batch-processing', '/app/input/pruebaVideo.mp4'], check=True)
         return "Video processing complete"
     
     except subprocess.CalledProcessError as e:
