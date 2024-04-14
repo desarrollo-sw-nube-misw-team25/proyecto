@@ -73,6 +73,8 @@ def delete_task(id_task):
 '''
     - Creates a specific task, requires authentcation.
 '''
+
+
 @tasks_blueprint.route('', methods=['POST'])
 @jwt_required()
 def create_task():
@@ -116,4 +118,3 @@ def create_task():
             "status": status
         }
     }), 200
-
