@@ -78,24 +78,25 @@ def delete_task(id_task):
 '''
 
 
-@tasks_blueprint.route('', methods=['POST'])
+@tasks_blueprint.route('/', methods=['POST'])
 @jwt_required()
 def create_task():
     user_id = get_jwt_identity()
 
     # Retrieve the video file from the request
-    video = request.files["video"]
+    video = request.files.get("video")
     if not video:
         return {"error": "No video provided"}, 400
 
     # Generate a unique ID for the video and create the filename
-    video_id = str(uuid.uuid4())
+    video_uuid = uuid.uuid4()
+    video_id = str(video_uuid)
     filename = f"{video_id}.mp4"
     video_path = os.path.join(video_folder_path, filename)
+    #video_folder_path = os.path.join('videos', filename)# Para que funcione en local windows
 
     # Ensure the directory exists
-    if not os.path.exists(video_folder_path):
-        os.makedirs(video_folder_path)
+    os.makedirs(os.path.dirname(video_path), exist_ok=True)
 
     # Save the video
     try:
@@ -110,7 +111,7 @@ def create_task():
     status = 'uploaded'
 
     # Save to data base
-    stored_video = UploadVideo().execute()
+    stored_video = UploadVideo(video_uuid, filename, timestamp, status).execute()
 
     # Return confirmation message
     return jsonify({
@@ -121,3 +122,4 @@ def create_task():
             "status": status
         }
     }), 200
+
