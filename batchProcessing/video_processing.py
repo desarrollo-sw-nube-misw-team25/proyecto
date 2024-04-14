@@ -1,5 +1,3 @@
-
-
 from celery import Celery
 import subprocess
 
@@ -19,7 +17,3 @@ if __name__ == "__main__":
     
     result = process_video.delay('/app/src/videos')
     print("Task ID:", result.id)
-
-
-
-
