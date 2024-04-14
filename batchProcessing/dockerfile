@@ -1,18 +1,14 @@
-# Use a base image with necessary dependencies
+
 FROM ubuntu:latest
 
-# Install required packages
 RUN apt-get update && \
     apt-get install -y ffmpeg
 
-# Set the working directory
 WORKDIR /app
 
-# Copy the shell script into the container
 COPY videoProcessing.sh /app/videoProcessing.sh
 
-# Copy the picture file into the container
 COPY idrl.jpg  /app/idrl.jpg
-# Set the entry point
+
 ENTRYPOINT ["./videoProcessing.sh"]
 
