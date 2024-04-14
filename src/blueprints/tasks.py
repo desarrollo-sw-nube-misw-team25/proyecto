@@ -41,6 +41,7 @@ def get_all_task():
 
     return tasks, 200
 
+
 '''
     - Get a specific task, requires authentcation.
 '''
@@ -66,11 +67,10 @@ def get_task(id_task):
 @jwt_required()
 def delete_task(id_task):
     user_id = get_jwt_identity()
-    result = delete_task_id(user_id, id_task)
-    if result:
-        return {"message": "Task deleted successfully"}, 200
-    else:
-        return {"message": "Task not found"}, 404
+
+    result = delete_task_id(id_task)
+    return result
+
 
 
 '''
@@ -93,7 +93,7 @@ def create_task():
     video_id = str(video_uuid)
     filename = f"{video_id}.mp4"
     video_path = os.path.join(video_folder_path, filename)
-    #video_folder_path = os.path.join('videos', filename)# Para que funcione en local windows
+    # video_folder_path = os.path.join('videos', filename)# Para que funcione en local windows
 
     # Ensure the directory exists
     os.makedirs(os.path.dirname(video_path), exist_ok=True)
@@ -110,6 +110,9 @@ def create_task():
     # The initial status of the video
     status = 'uploaded'
 
+    # The video download url
+    # download_url = ""
+
     # Save to data base
     stored_video = UploadVideo(video_uuid, filename, timestamp, status).execute()
 
@@ -122,4 +125,3 @@ def create_task():
             "status": status
         }
     }), 200
-

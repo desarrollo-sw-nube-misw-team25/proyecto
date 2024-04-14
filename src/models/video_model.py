@@ -8,6 +8,7 @@ class Video(db.Model):
     filename = db.Column(db.String(255), nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     status = db.Column(db.Enum('uploaded', 'processed', 'deleted', name='status_types'), default='uploaded')
+    #download_url = f"/videos/{filename}"
 
     def __repr__(self):
         return '<Video %r>' % {self.filename}
@@ -26,7 +27,8 @@ class Video(db.Model):
 
     def set_status(self, status):
         # Validate the input status
-        valid_statuses = {'uploaded', 'processed'}
+        valid_statuses = {'uploaded', 'processed','deleted'}
         if status not in valid_statuses:
             raise ValueError(f"Invalid status '{status}'. Valid statuses are {valid_statuses}.")
         self.status = status
+        db.session.commit()
