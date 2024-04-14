@@ -1,0 +1,3 @@
+celery -A video_processing worker -l info
+sudo systemctl start redis-server
+sudo docker run -v /home/pelucapreb/Descargas:/app/input batch-processing /app/input/pruebaVideo.mp4
