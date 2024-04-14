@@ -52,9 +52,9 @@ def get_task(id_task):
     user_id = get_jwt_identity()
     task = get_task_id(user_id, id_task)
     if task:
-        return task, 200
+        return jsonify(task), 200
     else:
-        return {"message": "Task not found"}, 404
+        return jsonify({"message": "Task not found"}), 404
 
 
 '''
