@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, request
-from src.app import celery
+from src.extensions import celery
 from src.models.video_model import Video
-from src.app import db
 from functools import wraps
 import os
 
