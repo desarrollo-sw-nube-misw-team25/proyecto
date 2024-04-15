@@ -3,7 +3,7 @@ FROM python:3.8
 
 # Set the working directory in the container
 WORKDIR /app
- 
+
 # Copy the entire src directory into the container
 COPY src/ /app/src/
 
@@ -17,4 +17,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 ENV PYTHONPATH "${PYTHONPATH}:/app"
 
 # Specify the command to run your application
-CMD ["python", "src/app.py"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "src.app:app"]
