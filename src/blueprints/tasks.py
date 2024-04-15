@@ -56,7 +56,7 @@ def get_all_task():
 @jwt_required()
 def get_task(id_task):
     user_id = get_jwt_identity()
-    task = get_task_id(user_id, id_task)
+    task = get_task_id(id_task)
     if task:
         return jsonify(task), 200
     else:
