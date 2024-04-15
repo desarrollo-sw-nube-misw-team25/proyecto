@@ -6,37 +6,58 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "5000:5000"
+      - "5001:5000"
     environment:
       - SQLALCHEMY_DATABASE_URI=postgresql://postgres:password@db/videodatabase
       - REDIS_URI=redis://redis:6379
       - BROKER_URI=redis://redis:6379
-  
-  app1:
+    volumes:
+      - video-data:/app/videos
+    depends_on:
+      - db
+      - redis
+
+  batch-processing:
     build:
       context: .
       dockerfile: batchProcessing/dockerfile
-    ports:
-      - "5001:5001"
-    environment:
-      - SQLALCHEMY_DATABASE_URI=postgresql://postgres:password@db/videodatabase
-      - REDIS_URI=redis://redis:6379
-      - BROKER_URI=redis://redis:6379
-
+    image: batch-processing
+    volumes:
+      - video-data:/app/videos
+    command: tail -f /dev/null
+    depends_on:
+      - db
 
   db:
     image: postgres:latest
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=videodatabase
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:latest
     ports:
       - "6379:6379"
 
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+
 volumes:
   postgres_data:
+  video-data:
