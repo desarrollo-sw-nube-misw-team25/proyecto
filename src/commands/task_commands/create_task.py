@@ -1,9 +1,10 @@
 import os
 
-
-from src.extensions import db,celery
+from src.extensions import db, celery
 import subprocess
 from src.models.video_model import Video
+
+unprocessed_video_folder_path = os.path.join('videos', 'unprocessed')
 
 
 @celery.task
@@ -26,14 +27,16 @@ def create_task():
         try:
             # Construct the paths
             video_filename = video.filename
-            video_path = os.path.join('videos', video_filename)
+            video_path = os.path.join(unprocessed_video_folder_path, video_filename)
 
             # Process the video with subprocess
             result = process_video.delay('videos')
 
             # Update the video state to 'processed'
-            video.state = 'processed'
-            db.session.commit()
+            # This is now done in the celery part
+            # video.set_status('processed')
+
+
 
 
         except subprocess.CalledProcessError as e:

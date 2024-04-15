@@ -10,7 +10,8 @@ import uuid
 from datetime import datetime
 
 tasks_blueprint = Blueprint('tasks', __name__, url_prefix='/api/tasks')
-video_folder_path = 'videos'
+unprocessed_video_folder_path = os.path.join('videos', 'unprocessed')
+processed_video_folder_path = os.path.join('videos', 'processed')
 
 '''
     - Create a task, requires authentication. 
@@ -92,7 +93,7 @@ def create_task():
     video_uuid = uuid.uuid4()
     video_id = str(video_uuid)
     filename = f"{video_id}.mp4"
-    video_path = os.path.join(video_folder_path, filename)
+    video_path = os.path.join(unprocessed_video_folder_path, filename)
     # video_folder_path = os.path.join('videos', filename)# Para que funcione en local windows
 
     # Ensure the directory exists
@@ -111,10 +112,11 @@ def create_task():
     status = 'uploaded'
 
     # The video download url
-    # download_url = ""
+    #TODO: Change this to the correct URL
+    download_url = ""
 
     # Save to data base
-    stored_video = UploadVideo(video_uuid, filename, timestamp, status).execute()
+    stored_video = UploadVideo(video_uuid, filename, timestamp, status, download_url).execute()
 
     # Return confirmation message
     return jsonify({

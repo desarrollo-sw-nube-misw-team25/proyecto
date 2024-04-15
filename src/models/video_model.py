@@ -8,7 +8,7 @@ class Video(db.Model):
     filename = db.Column(db.String(255), nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     status = db.Column(db.Enum('uploaded', 'processed', 'deleted', name='status_types'), default='uploaded')
-    #download_url = f"/videos/{filename}"
+    download_url = db.Column(db.String(255), nullable=True)
 
     def __repr__(self):
         return '<Video %r>' % {self.filename}

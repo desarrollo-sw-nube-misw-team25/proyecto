@@ -10,6 +10,7 @@ def get_task_id(user_id, id_task):
         return None
 
     # Construct the download URL
+    # TODO: Comparar si el path de hecho puede descargar
     download_url = f"/videos/{task.filename}"
 
     # Return a dictionary with the task's information
@@ -18,5 +19,5 @@ def get_task_id(user_id, id_task):
         'filename': task.path,
         'timestamp': task.timestamp,
         'state': task.status,
-        #'download_url': download_url
+        'download_url': download_url
     }

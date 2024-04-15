@@ -8,11 +8,12 @@ from src.models.video_model import Video
 
 
 class UploadVideo(BaseCommand):
-    def __init__(self, identification, filename, timestamp, status) -> None:
+    def __init__(self, identification, filename, timestamp, status,download_url) -> None:
         self.id = identification
         self.filename = filename
         self.timestamp = timestamp
         self.status = status
+        self.download_url = download_url
 
     def execute(self):
         new_video = Video(id=self.id, filename=self.filename, timestamp=self.timestamp, status=self.status)
