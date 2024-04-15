@@ -2,7 +2,7 @@
 FROM ubuntu:latest
 
 RUN apt-get update && \
-    apt-get install -y ffmpeg
+    apt-get install -y ffmpeg dos2unix
 
 WORKDIR /app
 
@@ -11,6 +11,8 @@ COPY /batchProcessing/videoProcessing.sh /app/videoProcessing.sh
 COPY /batchProcessing/idrl.jpg  /app/idrl.jpg
 
 RUN chmod +x /app/videoProcessing.sh
+
+RUN dos2unix /app/videoProcessing.sh
 
 RUN mkdir -p /app/videos
 
