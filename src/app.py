@@ -7,8 +7,9 @@ from src.blueprints.tasks import tasks_blueprint
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = (
-    "sqlite:///videodatabase.db"  # Configure your database URI
+    "postgresql://postgres:password@db/videodatabase"
 )
+
 app.config["REDIS_URI"] = "redis://localhost"
 app.config["BROKER_URI"] = "redis://localhost"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = (
