@@ -33,6 +33,8 @@ def handle_exception(err):
     return jsonify(response), err.code
 
 
+from src.models import user_model, video_model
+
 if __name__ == "__main__":
     with app.app_context():
         # Creates tables based on the models

@@ -56,7 +56,10 @@ services:
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
-    command: ["celery", "-A", "src.blueprints.tasks", "worker", "--loglevel=info"]
+    volumes:
+      - video-data:/app/videos
+    command:
+      ["celery", "-A", "src.blueprints.tasks", "worker", "--loglevel=info"]
   nginx:
     image: nginx:latest
     volumes:
