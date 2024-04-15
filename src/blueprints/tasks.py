@@ -7,11 +7,14 @@ from ..commands.task_commands.delete_task import delete_task_id
 from src.commands.task_commands.upload_video import UploadVideo
 import os
 import uuid
+import subprocess
 from datetime import datetime
-
+from celery import Celery
 tasks_blueprint = Blueprint('tasks', __name__, url_prefix='/api/tasks')
 unprocessed_video_folder_path = os.path.join('videos', 'unprocessed')
 processed_video_folder_path = os.path.join('videos', 'processed')
+
+celery = Celery('tasks', backend='redis://redis:6379/0', broker='redis://redis:6379/0')
 
 '''
     - Create a task, requires authentication. 
@@ -52,7 +55,7 @@ def get_all_task():
 @jwt_required()
 def get_task(id_task):
     user_id = get_jwt_identity()
-    task = get_task_id(uuid.UUID(id_task))
+    task = get_task_id(user_id, id_task)
     if task:
         return jsonify(task), 200
     else:
@@ -71,8 +74,20 @@ def delete_task(id_task):
 
     result = delete_task_id(id_task)
     return result
-
-
+@celery.task()
+def process_video(nombre_video):
+    
+    try:
+        # Using docker-compose to run the batch-processing service with the video file as an argument
+        subprocess.run([
+            'docker-compose', 'run', '--rm', 
+            'batch-processing', 
+            f'/app/videos/{nombre_video}'
+        ], check=True)
+        return "Video processing complete"
+    
+    except subprocess.CalledProcessError as e:
+        return f"Error processing video: {e}"
 
 '''
     - Creates a specific task, requires authentcation.
@@ -117,7 +132,8 @@ def create_task():
 
     # Save to data base
     stored_video = UploadVideo(video_uuid, filename, timestamp, status, download_url).execute()
-
+    result = process_video.delay(video_uuid)
+    print("Task ID:", result.id)
     # Return confirmation message
     return jsonify({
         "message": "Video task was created successfully",
