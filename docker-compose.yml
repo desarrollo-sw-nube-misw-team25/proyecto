@@ -11,17 +11,17 @@ services:
       - SQLALCHEMY_DATABASE_URI=postgresql://postgres:password@db/videodatabase
       - REDIS_URI=redis://redis:6379
       - BROKER_URI=redis://redis:6379
+    volumes:
+      - video-data:/app/videos
   
-  app1:
+  batch-processing:
     build:
       context: .
       dockerfile: batchProcessing/dockerfile
-    ports:
-      - "5001:5001"
-    environment:
-      - SQLALCHEMY_DATABASE_URI=postgresql://postgres:password@db/videodatabase
-      - REDIS_URI=redis://redis:6379
-      - BROKER_URI=redis://redis:6379
+    image: batch-processing
+    volumes:
+      - video-data:/app/videos
+    command: tail -f /dev/null
 
 
   db:
@@ -40,3 +40,4 @@ services:
 
 volumes:
   postgres_data:
+  video-data:
