@@ -10,7 +10,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = (
     "postgresql://postgres:password@db/videodatabase"
 )
 
-app.config["REDIS_URI"] = "redis://localhost"
+app.config["REDIS_URI"] = "redis://localhost:6379"
 app.config["BROKER_URI"] = "redis://localhost"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = (
     False  # Optional: disables modification tracking
