@@ -17,17 +17,6 @@ services:
       - db
       - redis
 
-  batch-processing:
-    build:
-      context: .
-      dockerfile: batchProcessing/dockerfile
-    image: batch-processing
-    volumes:
-      - video-data:/app/videos
-    command: tail -f /dev/null
-    depends_on:
-      - db
-
   db:
     image: postgres:latest
     ports:
@@ -60,6 +49,7 @@ services:
       - video-data:/app/videos
     command:
       ["celery", "-A", "src.blueprints.tasks", "worker", "--loglevel=info"]
+
   nginx:
     image: nginx:latest
     volumes:
