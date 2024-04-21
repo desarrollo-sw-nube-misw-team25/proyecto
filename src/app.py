@@ -7,7 +7,7 @@ from src.blueprints.tasks import tasks_blueprint
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = (
-    "postgresql://postgres:password@db/videodatabase"
+    "postgresql://postgres:pTbE,7Pjh4\Ci6q.@34.42.255.65/db"
 )
 app.config["REDIS_URI"] = "redis://redis:6379"
 app.config["BROKER_URI"] = "redis://redis:6379"
