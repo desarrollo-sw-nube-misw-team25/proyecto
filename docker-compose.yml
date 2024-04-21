@@ -14,7 +14,6 @@ services:
     volumes:
       - video-data:/app/videos
     depends_on:
-      - db
       - redis
 
   redis:
