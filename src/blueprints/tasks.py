@@ -82,7 +82,7 @@ def delete_task(id_task):
 def process_video(id_video):
     video_id=id_video
 
-    url="http://34.69.185.218:5000/procesarVideo/{video_id}"
+    url = f"http://34.69.185.218:5000/procesarVideo/{video_id}"
 
     response= requests.post(url)
     
@@ -104,7 +104,7 @@ def create_task():
     video_uuid = uuid.uuid4()
     video_id = str(video_uuid)
     filename = f"{video_id}.mp4"
-    video_path = os.path.join(unprocessed_video_folder_path, filename)
+    video_path = f"/mnt/nfs/general/unprocessed/{filename}"
     # video_folder_path = os.path.join('videos', filename)# Para que funcione en local windows
 
     # Ensure the directory exists
@@ -130,7 +130,7 @@ def create_task():
     stored_video = UploadVideo(
         video_uuid, filename, timestamp, status, download_url
     ).execute()
-    result = process_video.delay(video_uuid)
+    result = process_video.delay(video_id)
     print("Task ID:", result.id)
     # Return confirmation message
     return (
