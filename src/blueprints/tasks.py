@@ -12,8 +12,8 @@ from datetime import datetime
 from celery import Celery
 
 tasks_blueprint = Blueprint("tasks", __name__, url_prefix="/api/tasks")
-unprocessed_video_folder_path = os.path.join("videos", "unprocessed")
-processed_video_folder_path = os.path.join("videos", "processed")
+unprocessed_video_folder_path = os.path.join("mnt", "nfs", "general", "unprocessed")#/mnt/nfs/general/unprocessed
+processed_video_folder_path = os.path.join("mnt", "nfs", "general", "processed")#/mnt/nfs/general/processed
 
 celery = Celery("tasks", backend="redis://redis:6379/0", broker="redis://redis:6379/0")
 
