@@ -23,3 +23,18 @@ def get_task_id(id_task):
         'state': video.status,
         'download_url': download_url
     }
+
+
+def get_video_task_id(id_task):
+    # Query the database for the task with the given ID
+    video = Video.query.filter_by(id=id_task).first()
+
+    if video is None:
+        # No task found with that ID
+        return None
+
+    # Construct the download URL
+    download_url = os.path.join(processed_video_folder_path, video.filename)
+
+    # Return a dictionary with the task's information
+    return download_url

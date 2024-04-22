@@ -1,8 +1,8 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, send_file
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from ..commands.task_commands.create_task import create_task
 from ..commands.task_commands.get_all_tasks import get_all_tasks
-from ..commands.task_commands.get_task import get_task_id
+from ..commands.task_commands.get_task import get_task_id, get_video_task_id
 from ..commands.task_commands.delete_task import delete_task_id
 from src.commands.task_commands.upload_video import UploadVideo
 import os
@@ -62,6 +62,23 @@ def get_task(id_task):
         return jsonify(task), 200
     else:
         return jsonify({"message": "Task not found"}), 404
+
+
+"""
+    - Download a video once its completed, requires authentcation.
+"""
+
+@tasks_blueprint.route("/download/<id_task>", methods=["GET"])
+@jwt_required()
+def get_task(id_task):
+    user_id = get_jwt_identity()
+    video_path = get_video_task_id(id_task)
+    if video_path:
+        # Return the video as a direct download
+        return send_file(video_path, as_attachment=True, attachment_filename=os.path.basename(video_path),
+                         mimetype='video/mp4')
+    else:
+        return jsonify({"message": "Video not found"}), 404
 
 
 """
