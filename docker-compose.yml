@@ -13,7 +13,7 @@ services:
       - BROKER_URI=redis://redis:6379
     volumes:
       - type: bind
-        source: /mnt/nfs/general/unprocessed
+        source: /mnt/nfs/general
         target: /app/videos
     depends_on:
       - redis

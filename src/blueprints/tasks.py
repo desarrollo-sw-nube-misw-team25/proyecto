@@ -13,8 +13,8 @@ from celery import Celery
 import requests
 
 tasks_blueprint = Blueprint("tasks", __name__, url_prefix="/api/tasks")
-unprocessed_video_folder_path = "/app/videos"
-processed_video_folder_path = "/mnt/nfs/general/processed"
+unprocessed_video_folder_path = "/app/video/unprocessed"
+processed_video_folder_path = "/app/video/processed"
 
 celery = Celery("tasks", backend="redis://redis:6379/0", broker="redis://redis:6379/0")
 
