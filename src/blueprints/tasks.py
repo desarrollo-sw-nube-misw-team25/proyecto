@@ -13,7 +13,7 @@ from celery import Celery
 import requests
 
 tasks_blueprint = Blueprint("tasks", __name__, url_prefix="/api/tasks")
-unprocessed_video_folder_path = "/mnt/nfs/general/unprocessed"
+unprocessed_video_folder_path = "/app/videos"
 processed_video_folder_path = "/mnt/nfs/general/processed"
 
 celery = Celery("tasks", backend="redis://redis:6379/0", broker="redis://redis:6379/0")
@@ -103,8 +103,8 @@ def create_task():
     # Generate a unique ID for the video and create the filename
     video_uuid = uuid.uuid4()
     video_id = str(video_uuid)
-    filename = f"{video_id}.mp4"
-    video_path = f"/mnt/nfs/general/unprocessed/{filename}"
+    filename = f"/app/videos/{video_id}.mp4"
+    
     # video_folder_path = os.path.join('videos', filename)# Para que funcione en local windows
 
     # Ensure the directory exists
@@ -112,7 +112,7 @@ def create_task():
 
     # Save the video
     try:
-        video.save(video_path)
+        video.save(filename)
     except Exception as e:
         return {"error": str(e)}, 500
 
