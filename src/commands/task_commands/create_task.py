@@ -4,7 +4,7 @@ from src.extensions import db, celery
 import subprocess
 from src.models.video_model import Video
 
-unprocessed_video_folder_path = os.path.join("mnt", "nfs", "general", "unprocessed")#/mnt/nfs/general/unprocessed
+unprocessed_video_folder_path = "/mnt/nfs/general/unprocessed"
 
 @celery.task
 def process_video(video_path):

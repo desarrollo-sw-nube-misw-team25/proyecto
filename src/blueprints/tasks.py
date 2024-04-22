@@ -13,8 +13,8 @@ from celery import Celery
 import requests
 
 tasks_blueprint = Blueprint("tasks", __name__, url_prefix="/api/tasks")
-unprocessed_video_folder_path = os.path.join("mnt", "nfs", "general", "unprocessed")#/mnt/nfs/general/unprocessed
-processed_video_folder_path = os.path.join("mnt", "nfs", "general", "processed")#/mnt/nfs/general/processed
+unprocessed_video_folder_path = "/mnt/nfs/general/unprocessed"
+processed_video_folder_path = "/mnt/nfs/general/processed"
 
 celery = Celery("tasks", backend="redis://redis:6379/0", broker="redis://redis:6379/0")
 
@@ -108,7 +108,7 @@ def create_task():
     # video_folder_path = os.path.join('videos', filename)# Para que funcione en local windows
 
     # Ensure the directory exists
-    os.makedirs(os.path.dirname(video_path), exist_ok=True)
+    # os.makedirs(os.path.dirname(video_path), exist_ok=True)
 
     # Save the video
     try:
