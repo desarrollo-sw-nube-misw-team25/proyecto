@@ -10,6 +10,7 @@ import uuid
 import subprocess
 from datetime import datetime
 from celery import Celery
+import requests
 
 tasks_blueprint = Blueprint("tasks", __name__, url_prefix="/api/tasks")
 unprocessed_video_folder_path = os.path.join("mnt", "nfs", "general", "unprocessed")#/mnt/nfs/general/unprocessed
@@ -78,26 +79,15 @@ def delete_task(id_task):
 
 
 @celery.task()
-def process_video(nombre_video):
+def process_video(id_video):
+    video_id=id_video
 
-    try:
-        command = f"apt-get update && apt-get install -y ffmpeg dos2unix && chmod +x /app/videoProcessing.sh && /app/videoProcessing.sh /app/videos/unprocessed/{nombre_video}.mp4"
-        # Using docker-compose to run the batch-processing service with the video file as an argument
-        subprocess.run(
-            command,
-            shell=True,  # Allows the use of shell syntax
-            check=True,  # Raises CalledProcessError on non-zero exit status
-            text=True,  # Ensures output/error are returned as strings
-        )
-        return "Video processing complete"
+    url="http://34.69.185.218:5000/procesarVideo/{video_id}"
 
-    except subprocess.CalledProcessError as e:
-        return f"Error processing video: {e}"
+    response= requests.post(url)
+    
+    print(response)
 
-
-"""
-    - Creates a specific task, requires authentcation.
-"""
 
 
 @tasks_blueprint.route("/", methods=["POST"])
