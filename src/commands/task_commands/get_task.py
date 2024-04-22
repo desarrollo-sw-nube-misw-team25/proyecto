@@ -12,7 +12,6 @@ def get_task_id(id_task):
         return None
 
     # Construct the download URL
-    # TODO: Comparar si el path de hecho puede descargar
     download_url = os.path.join(processed_video_folder_path, video.filename)
 
     # Return a dictionary with the task's information
@@ -34,7 +33,11 @@ def get_video_task_id(id_task):
         return None
 
     # Construct the download URL
-    download_url = os.path.join(processed_video_folder_path, video.filename)
+    download_url = video.download_url
+
+    # Retrieve file from processed_video_folder_path and in the filename append _processed.mp4
+    uncut_filename = video.filename.split(".")[0]
+    download_url = os.path.join(processed_video_folder_path, uncut_filename, "_processed.mp4")
 
     # Return a dictionary with the task's information
     return download_url
