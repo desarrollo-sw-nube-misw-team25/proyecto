@@ -70,7 +70,7 @@ def get_task(id_task):
 
 @tasks_blueprint.route("/download/<id_task>", methods=["GET"])
 @jwt_required()
-def get_task(id_task):
+def get_task_download(id_task):
     user_id = get_jwt_identity()
     video_path = get_video_task_id(id_task)
     if video_path:
