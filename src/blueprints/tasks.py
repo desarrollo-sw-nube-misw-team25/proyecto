@@ -75,7 +75,7 @@ def get_task_download(id_task):
     video_path = get_video_task_id(id_task)
     if video_path:
         # Return the video as a direct download
-        return send_file(video_path, as_attachment=True, attachment_filename='processed_video.mp4', mimetype='video/mp4')
+        return send_file(video_path, as_attachment=True, mimetype='video/mp4')
     else:
         return jsonify({"message": "Video not found"}), 404
 
