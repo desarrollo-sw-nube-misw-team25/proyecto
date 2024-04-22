@@ -8,58 +8,20 @@ services:
     ports:
       - "5001:5000"
     environment:
-      - SQLALCHEMY_DATABASE_URI=postgresql://postgres:password@db/videodatabase
+      - SQLALCHEMY_DATABASE_URI=postgresql://postgres:pTbE,7Pjh4\\Ci6q.@34.42.255.65:5432/db
       - REDIS_URI=redis://redis:6379
       - BROKER_URI=redis://redis:6379
     volumes:
       - video-data:/app/videos
     depends_on:
-      - db
       - redis
-
-  batch-processing:
-    build:
-      context: .
-      dockerfile: batchProcessing/dockerfile
-    image: batch-processing
-    volumes:
-      - video-data:/app/videos
-    command: tail -f /dev/null
-    depends_on:
-      - db
-
-  db:
-    image: postgres:latest
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=videodatabase
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   redis:
     image: redis:latest
     ports:
       - "6379:6379"
 
-  worker:
-    build: .
-    depends_on:
-      - redis
-    environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
-    volumes:
-      - video-data:/app/videos
-    command:
-      ["celery", "-A", "src.blueprints.tasks", "worker", "--loglevel=info"]
+
   nginx:
     image: nginx:latest
     volumes:
