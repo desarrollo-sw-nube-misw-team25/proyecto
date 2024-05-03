@@ -1,21 +1,24 @@
 #!/bin/bash
 
-# Check if an argument is provided
+
 if [ $# -ne 1 ]; then
     echo "Usage: $0 <video_path>"
     exit 1
 fi
 
-input_video="$1"
+video_name="$1"
+input_video="/home/${video_name}"
+processed_folder="/home"
+output_video="${processed_folder}/${video_name%.*}_processed.mp4"
 
-# Final filename
-processed_folder="/mnt/nfs/general/processed/"
-output_video="${processed_folder}/$(basename ${input_video%.*}_processed.mp4)"
+gsutil cp "gs://almacenamiento-videos-nube/unprocessed/${video_name}" "${input_video}"
 
-# Create processed directory if it does not exist
-if [ ! -d "$processed_folder" ]; then
-    mkdir -p "$processed_folder"
+# Revisar si se descargo bien
+if [ ! -f "$input_video" ]; then
+    echo "Failed to download video."
+    exit 1
 fi
+
 
 initial_frame="./idrl.jpg"
 final_frame="./idrl.jpg"
@@ -33,3 +36,10 @@ ffmpeg -i "$input_video" -i "$initial_frame" -i "$final_frame" \
 -c:v libx264 -c:a copy -t 20 "$output_video"
 
 echo "The processed video has been saved as: $output_video"
+
+gsutil cp "${output_video}" "gs://almacenamiento-videos-nube/processed/" 
+
+rm -f "$input_video"
+rm -f "$output_video"
+
+echo "Local copies of videos have been deleted."
