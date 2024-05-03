@@ -7,8 +7,8 @@ if [ $# -ne 1 ]; then
 fi
 
 video_name="$1"
-input_video="/home/${video_name}"
-processed_folder="/home"
+input_video="/home/pelucapreb/${video_name}"
+processed_folder="/home/pelucapreb"
 output_video="${processed_folder}/${video_name%.*}_processed.mp4"
 
 gsutil cp "gs://almacenamiento-videos-nube/unprocessed/${video_name}" "${input_video}"
