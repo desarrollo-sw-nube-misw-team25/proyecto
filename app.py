@@ -7,7 +7,7 @@ app = Flask(__name__)
 def process_video(video_id):
    
     filename = f"{video_id}.mp4"
-    command = f"sudo ./videoProcessing.sh  {filename}"
+    command = f"./videoProcessing.sh  {filename}"
     try:
         result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         response = {
