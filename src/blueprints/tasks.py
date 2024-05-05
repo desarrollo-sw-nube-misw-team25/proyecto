@@ -25,7 +25,13 @@ def upload_video(bucket_name, destination_blob_name, video, credentials_path):
     blob = bucket.blob(destination_blob_name)
     blob.upload_from_file(video)
 
-
+def download_video(bucket_name, source_blob_name, destination_file_name, credentials_path):
+    credentials = service_account.Credentials.from_service_account_file(credentials_path)
+    storage_client = storage.Client(credentials=credentials)
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(source_blob_name)
+    blob.download_to_filename(destination_file_name)
+    
 
 tasks_blueprint = Blueprint("tasks", __name__, url_prefix="/api/tasks")
 unprocessed_video_folder_path = "/app/videos"
