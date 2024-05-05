@@ -2,8 +2,7 @@ import os
 
 from src.models.video_model import Video
 
-processed_video_folder_path = os.path.join('videos', 'unprocessed')
-
+processed_video_folder_path = "/mnt/nfs/general/processed"
 def get_task_id(id_task):
     # Query the database for the task with the given ID
     video = Video.query.filter_by(id=id_task).first()
