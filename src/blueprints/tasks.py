@@ -11,6 +11,21 @@ import subprocess
 from datetime import datetime
 from celery import Celery
 import requests
+from google.cloud import storage
+from google.oauth2 import service_account
+
+bucket_name = "almacenamiento-videos-nube"
+credentials_path = "../../proyecto-sw-nube-c27a18cc403a.json"
+
+def upload_video(bucket_name, destination_blob_name, video, credentials_path):
+
+    credentials = service_account.Credentials.from_service_account_file(credentials_path)
+    storage_client = storage.Client(credentials=credentials)
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(destination_blob_name)
+    blob.upload_from_file(video)
+
+
 
 tasks_blueprint = Blueprint("tasks", __name__, url_prefix="/api/tasks")
 unprocessed_video_folder_path = "/app/videos"
@@ -82,7 +97,7 @@ def delete_task(id_task):
 def process_video(id_video):
     video_id=id_video
 
-    url = f"http://34.69.185.218:5000/procesarVideo/{video_id}"
+    url = f"http://35.188.110.145:5000/procesarVideo/{video_id}"
 
     response= requests.post(url)
     
@@ -103,18 +118,12 @@ def create_task():
     # Generate a unique ID for the video and create the filename
     video_uuid = uuid.uuid4()
     video_id = str(video_uuid)
-    filename = f"/app/videos/{video_id}.mp4"
+    filename = f"unprocessed/{video_id}.mp4"
     
-    # video_folder_path = os.path.join('videos', filename)# Para que funcione en local windows
 
-    # Ensure the directory exists
-    # os.makedirs(os.path.dirname(video_path), exist_ok=True)
+    upload_video(bucket_name,filename,video,credentials_path)
 
-    # Save the video
-    try:
-        video.save(filename)
-    except Exception as e:
-        return {"error": str(e)}, 500
+    
 
     # Generate timestamp
     timestamp = datetime.now()

@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "proyecto-sw-nube",
+  "private_key_id": "c27a18cc403a3dfc80966b83dff7866f34d47231",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCa4yVx36W8D6/S\nHza3/gL/kQTDMhh4Yx5sq3grE/BMIcYY/tNQQGOvMwPx2s4iXS++dJIScYwEzmYC\nfDe0dsILqHGEKQo+3Pb6wkwyM0QqG9xFHXeu0qBBNJ1vgZEDaSdE3J7F8vEsgY3f\nP0SLGUDA1soBcwNcK/JFC01wIpde8fYbcafmXzyrUwd9TtgejJVNjpwQJyuv68Pr\n4RSnA6aVCTkm/GIM4ij7aELcWuALhe2iz0fFrkokTFy+8dTqk9lz4ygcJXDQWvW2\ns8YkOF1+ZXZ5wykrQFjV531S72B5LIVzbWggnGs4Qt8zz5gWuS5rtseRQAkpboSp\n9YLnPmsHAgMBAAECggEAEEbEfZX6Daw8VsFu96Da4c50iKqwBZ6s6NCQHT7IJsf5\n0FCfFjTeBOBAjt7mgJf4V3RakVObWjnyYFp7ZByCwcTewPurFvYTgkB+z1ux0xcA\na8bv99AshQ2pablc6tXXCZaBnN2t2HZ42TgF1PQ/aMRpkANtG/eGSxkn9xu7en+a\n7rK1XliC8fcJSiZ27B26NQKWi4MAWdT2eiVMTcLd7JkeN+0DqvmnRFWiWIbLrAwG\n35YjW91ogKPTd53fhjTTN7t4ffCRse0n3OM3XDhM0Cn9Ahn5GRWmyAP/95ANrK3V\nE7G5dOvFrdzSx6480rga2ds2iL1R6LwmImIjcrBr0QKBgQDQoUiKoH7MJgY73AEM\nXub/jLtfGsbTJixFXUiosIr9S+h657C0SG/s1n4cf2QAURX5nCIuoRl7MGVuLA1v\n7DfQCxplnPeWzd7l6mQMmMztgXif+RmL1tmWXebyfdAaRcvXkCqkhT6kWSx3X9Mp\nBHyctCgNBOSD28QzgjJGm3HKbwKBgQC+DgrHqj6CfnYL2wDPoUptsS7+bq8LASsY\nJUKAcSsFkK5ymgXGOgH30s54D2HYmOH2DDbbljkhP6U1cX/gqQA1Gi2Y/4er5g3R\npVDLJc4zaxvaegJyboFOGONwDFIwubvVMhJceB6GnZKb2XMai34eVpMjOZUAOjjy\n5+RTDSuU6QKBgQCpXBP4PPtRnBh5ZUoQkcWxc7vzI1h9tcJAeM5v6giaQJGzm/tt\nDlSVjTWIyr0SKMDPBTkWYz69Kvdb7TTnQ3m3UBwYmsi+SdcFCzY2p5/LucuDCYL8\nauftUcMV3J4fhcNI9UY4kdXdMmqPaWGQLY0+5FyS3QLoK3HlYm6PtMY1zwKBgDvL\nWTLmahJOTT9/oKqyeSM3yqw8EJBqxq8rEdgtQrbWhTwDH2v1VictSM5XMJafyv/J\nafz+L205g/XjhrMdGLacTNpFEt9PWuupkljHxS9CNJoxJtHv2HjEtdHL3pP764+w\n2DwFgr0hmD22VVN1rbFH1bUQacOPjdlGgfxrOVn5AoGACXDTta1G9cwjmchByAqy\n12ZsenJm1AFkA9NRhjAZPIKr3GakgpGtB88ZQ8UJQE9orurbkV7gIqlI0oNBqIaE\njn5NVenbAts73XQ39aHlMU6isOdehbZzzxHzGg/THPb7aFqSSWQhnO5XhxJHNVMw\ncCv7G/djK4LRcqXYakWdih4=\n-----END PRIVATE KEY-----\n",
+  "client_email": "accesorecursos@proyecto-sw-nube.iam.gserviceaccount.com",
+  "client_id": "103158249737650361628",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/accesorecursos%40proyecto-sw-nube.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

@@ -11,10 +11,6 @@ services:
       - SQLALCHEMY_DATABASE_URI=postgresql://postgres:pTbE,7Pjh4\\Ci6q.@34.42.255.65:5432/db
       - REDIS_URI=redis://redis:6379
       - BROKER_URI=redis://redis:6379
-    volumes:
-      - type: bind
-        source: /mnt/nfs/general/unprocessed
-        target: /app/videos
     depends_on:
       - redis
 
