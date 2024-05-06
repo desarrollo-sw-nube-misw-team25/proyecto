@@ -16,6 +16,9 @@ from google.oauth2 import service_account
 
 bucket_name = "almacenamiento-videos-nube"
 credentials_path = "../../proyecto-sw-nube-c27a18cc403a.json"
+tasks_blueprint = Blueprint("tasks", __name__, url_prefix="/api/tasks")
+celery = Celery("tasks", backend="redis://redis:6379/0", broker="redis://redis:6379/0")
+
 
 def upload_video(bucket_name, destination_blob_name, video, credentials_path):
 
@@ -32,12 +35,6 @@ def download_video(bucket_name, source_blob_name, destination_file_name, credent
     blob = bucket.blob(source_blob_name)
     blob.download_to_filename(destination_file_name)
     
-
-tasks_blueprint = Blueprint("tasks", __name__, url_prefix="/api/tasks")
-unprocessed_video_folder_path = "/app/videos"
-processed_video_folder_path = "/mnt/nfs/general/processed"
-
-celery = Celery("tasks", backend="redis://redis:6379/0", broker="redis://redis:6379/0")
 
 """
     - Create a task, requires authentication. 
@@ -115,7 +112,7 @@ def process_video(id_video):
 @jwt_required()
 def create_task():
     user_id = get_jwt_identity()
-
+     print("invocado")
     # Retrieve the video file from the request
     video = request.files.get("video")
     if not video:
@@ -139,12 +136,14 @@ def create_task():
 
     # The video download url
     # TODO: Change this to the correct URL
-    download_url = ""
+    download_url = "unprocessed"
+
 
     # Save to data base
     stored_video = UploadVideo(
         video_uuid, filename, timestamp, status, download_url
     ).execute()
+    print("llegue")
     result = process_video.delay(video_id)
     print("Task ID:", result.id)
     # Return confirmation message
