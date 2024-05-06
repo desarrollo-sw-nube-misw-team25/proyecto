@@ -15,26 +15,33 @@ from google.cloud import storage
 from google.oauth2 import service_account
 
 bucket_name = "almacenamiento-videos-nube"
-credentials_path = "../../proyecto-sw-nube-c27a18cc403a.json"
+credentials_path = "/app/src/proyecto-sw-nube-c27a18cc403a.json"
 tasks_blueprint = Blueprint("tasks", __name__, url_prefix="/api/tasks")
 celery = Celery("tasks", backend="redis://redis:6379/0", broker="redis://redis:6379/0")
 
 
 def upload_video(bucket_name, destination_blob_name, video, credentials_path):
 
-    credentials = service_account.Credentials.from_service_account_file(credentials_path)
+    credentials = service_account.Credentials.from_service_account_file(
+        credentials_path
+    )
     storage_client = storage.Client(credentials=credentials)
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(destination_blob_name)
     blob.upload_from_file(video)
 
-def download_video(bucket_name, source_blob_name, destination_file_name, credentials_path):
-    credentials = service_account.Credentials.from_service_account_file(credentials_path)
+
+def download_video(
+    bucket_name, source_blob_name, destination_file_name, credentials_path
+):
+    credentials = service_account.Credentials.from_service_account_file(
+        credentials_path
+    )
     storage_client = storage.Client(credentials=credentials)
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(source_blob_name)
     blob.download_to_filename(destination_file_name)
-    
+
 
 """
     - Create a task, requires authentication. 
@@ -98,21 +105,19 @@ def delete_task(id_task):
 
 @celery.task()
 def process_video(id_video):
-    video_id=id_video
+    video_id = id_video
 
     url = f"http://35.188.110.145:5000/procesarVideo/{video_id}"
 
-    response= requests.post(url)
-    
-    print(response)
+    response = requests.post(url)
 
+    print(response)
 
 
 @tasks_blueprint.route("/", methods=["POST"])
 @jwt_required()
 def create_task():
     user_id = get_jwt_identity()
-     print("invocado")
     # Retrieve the video file from the request
     video = request.files.get("video")
     if not video:
@@ -122,11 +127,8 @@ def create_task():
     video_uuid = uuid.uuid4()
     video_id = str(video_uuid)
     filename = f"unprocessed/{video_id}.mp4"
-    
 
-    upload_video(bucket_name,filename,video,credentials_path)
-
-    
+    upload_video(bucket_name, filename, video, credentials_path)
 
     # Generate timestamp
     timestamp = datetime.now()
@@ -138,12 +140,10 @@ def create_task():
     # TODO: Change this to the correct URL
     download_url = "unprocessed"
 
-
     # Save to data base
     stored_video = UploadVideo(
         video_uuid, filename, timestamp, status, download_url
     ).execute()
-    print("llegue")
     result = process_video.delay(video_id)
     print("Task ID:", result.id)
     # Return confirmation message
