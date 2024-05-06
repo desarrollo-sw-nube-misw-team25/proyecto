@@ -7,7 +7,9 @@ from src.blueprints.tasks import tasks_blueprint
 from src.models import user_model, video_model
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = r"postgresql://postgres:pTbE,7Pjh4\Ci6q.@34.42.255.65/db"
+app.config["SQLALCHEMY_DATABASE_URI"] = (
+    r"postgresql://postgres:postgres@34.42.255.65/db"
+)
 app.config["REDIS_URI"] = "redis://redis:6379"
 app.config["BROKER_URI"] = "redis://redis:6379"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -21,6 +23,7 @@ app.register_blueprint(tasks_blueprint)
 db.init_app(app)
 bcrypt.init_app(app)
 jwt.init_app(app)
+
 
 @app.errorhandler(ApiError)
 def handle_exception(err):
