@@ -107,7 +107,7 @@ def delete_task(id_task):
 def process_video(id_video):
     video_id = id_video
 
-    url = f"http://35.188.110.145:5000/procesarVideo/{video_id}"
+    url = f"http://34.122.64.63:5000/procesarVideo/{video_id}"
 
     response = requests.post(url)
 
