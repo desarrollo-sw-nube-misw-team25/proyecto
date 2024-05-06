@@ -8,7 +8,7 @@ from src.models import user_model, video_model
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = (
-    r"postgresql://postgres:postgres@34.42.255.65/db"
+    "postgresql://postgres:postgres@database-1.cbc9gelz1ymu.us-east-1.rds.amazonaws.com:5432/db"
 )
 app.config["REDIS_URI"] = "redis://redis:6379"
 app.config["BROKER_URI"] = "redis://redis:6379"
