@@ -5,12 +5,6 @@ FROM python:3.8
 # Set the working directory in the container
 WORKDIR /app
 
-COPY /batchProcessing/videoProcessing.sh /app/videoProcessing.sh
-
-COPY /batchProcessing/idrl.jpg  /app/idrl.jpg
-
-RUN chmod +x /app/videoProcessing.sh
-
 RUN mkdir -p /app/videos
 
 RUN chmod 777 /app/videos
