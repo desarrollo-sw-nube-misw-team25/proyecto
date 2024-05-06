@@ -9,7 +9,7 @@ from src.errors.errors import BadRequestApi
 users_blueprint = Blueprint("users", __name__)
 
 
-@users_blueprint.route("/api/auth/login", methods=["GET"])
+@users_blueprint.route("/api/auth/login", methods=["POST"])
 def login_user():
     try:
         token = LoginUser(request.get_json()).execute()
