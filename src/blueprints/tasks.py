@@ -24,15 +24,10 @@ celery = Celery("tasks", backend="redis://redis:6379/0", broker="redis://redis:6
 service_account_info_json = os.getenv("GOOGLE_CREDENTIALS")
 
 
-def upload_video(bucket_name, destination_blob_name, video):
-
-    credentials = service_account.Credentials.from_service_account_file(
-        service_account_info_json
+def upload_video(output_video):
+    subprocess.run(
+        f'gsutil cp "${output_video}" "gs://almacenamiento2-videos-nube/unprocessed/"'
     )
-    storage_client = storage.Client(credentials=credentials)
-    bucket = storage_client.bucket(bucket_name)
-    blob = bucket.blob(destination_blob_name)
-    blob.upload_from_file(video)
 
 
 def download_video(bucket_name, source_blob_name, destination_file_name):
@@ -128,7 +123,12 @@ def create_task():
     # Generate a unique ID for the video and create the filename
     video_uuid = uuid.uuid4()
     video_id = str(video_uuid)
-    filename = f"unprocessed/{video_id}.mp4"
+    filename = f"/app/videos/{video_id}.mp4"
+
+    try:
+        video.save(filename)
+    except Exception as e:
+        return {"error": str(e)}, 500
 
     # Generate timestamp
     timestamp = datetime.now()
@@ -136,7 +136,7 @@ def create_task():
     # The initial status of the video
     status = "uploaded"
 
-    upload_video(bucket_name, filename, video)
+    upload_video(filename)
 
     # The video download url
     download_url = "unprocessed"
