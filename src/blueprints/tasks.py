@@ -1,4 +1,6 @@
-from flask import Blueprint, request, jsonify
+import base64
+from dotenv import load_dotenv
+from flask import Blueprint, json, logging, request, jsonify
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from ..commands.task_commands.create_task import create_task
 from ..commands.task_commands.get_all_tasks import get_all_tasks
@@ -14,16 +16,18 @@ import requests
 from google.cloud import storage
 from google.oauth2 import service_account
 
-bucket_name = "almacenamiento-videos-nube"
-credentials_path = "/app/src/proyecto-sw-nube-c27a18cc403a.json"
+
+load_dotenv()
+bucket_name = "almacenamiento2-videos-nube"
 tasks_blueprint = Blueprint("tasks", __name__, url_prefix="/api/tasks")
 celery = Celery("tasks", backend="redis://redis:6379/0", broker="redis://redis:6379/0")
+service_account_info_json = os.getenv("GOOGLE_CREDENTIALS")
 
 
-def upload_video(bucket_name, destination_blob_name, video, credentials_path):
+def upload_video(bucket_name, destination_blob_name, video):
 
     credentials = service_account.Credentials.from_service_account_file(
-        credentials_path
+        service_account_info_json
     )
     storage_client = storage.Client(credentials=credentials)
     bucket = storage_client.bucket(bucket_name)
@@ -31,11 +35,9 @@ def upload_video(bucket_name, destination_blob_name, video, credentials_path):
     blob.upload_from_file(video)
 
 
-def download_video(
-    bucket_name, source_blob_name, destination_file_name, credentials_path
-):
+def download_video(bucket_name, source_blob_name, destination_file_name):
     credentials = service_account.Credentials.from_service_account_file(
-        credentials_path
+        service_account_info_json
     )
     storage_client = storage.Client(credentials=credentials)
     bucket = storage_client.bucket(bucket_name)
@@ -133,6 +135,8 @@ def create_task():
 
     # The initial status of the video
     status = "uploaded"
+
+    upload_video(bucket_name, filename, video)
 
     # The video download url
     download_url = "unprocessed"
