@@ -107,7 +107,7 @@ def delete_task(id_task):
 def process_video(id_video):
     video_id = id_video
 
-    url = f"http://34.122.64.63:5000/procesarVideo/{video_id}"
+    url = f"http://34.71.11.68:5000/procesarVideo/{video_id}"
 
     response = requests.post(url)
 
@@ -128,8 +128,6 @@ def create_task():
     video_id = str(video_uuid)
     filename = f"unprocessed/{video_id}.mp4"
 
-    upload_video(bucket_name, filename, video, credentials_path)
-
     # Generate timestamp
     timestamp = datetime.now()
 
@@ -137,7 +135,6 @@ def create_task():
     status = "uploaded"
 
     # The video download url
-    # TODO: Change this to the correct URL
     download_url = "unprocessed"
 
     # Save to data base
