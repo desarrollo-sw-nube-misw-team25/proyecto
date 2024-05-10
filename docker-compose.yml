@@ -8,7 +8,7 @@ services:
     ports:
       - "5001:5000"
     environment:
-      - SQLALCHEMY_DATABASE_URI=postgresql://postgres:pTbE,7Pjh4\\Ci6q.@34.42.255.65:5432/db
+      - SQLALCHEMY_DATABASE_URI=postgresql://postgres:admin@34.136.103.218:5432/db
       - REDIS_URI=redis://redis:6379
       - BROKER_URI=redis://redis:6379
     depends_on:
@@ -28,7 +28,7 @@ services:
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
     command:
       ["celery", "-A", "src.blueprints.tasks", "worker", "--loglevel=info"]
-      
+
   nginx:
     image: nginx:latest
     volumes:

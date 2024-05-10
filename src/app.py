@@ -1,15 +1,15 @@
+import os
 from flask import Flask, jsonify
-
+from dotenv import load_dotenv
 from src.errors.errors import ApiError
 from src.extensions import db, bcrypt, celery, jwt
 from src.blueprints.users import users_blueprint
 from src.blueprints.tasks import tasks_blueprint
-from src.models import user_model, video_model
+
+load_dotenv()
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = (
-    r"postgresql://postgres:postgres@34.42.255.65/db"
-)
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("SQLALCHEMY_DATABASE_URI")
 app.config["REDIS_URI"] = "redis://redis:6379"
 app.config["BROKER_URI"] = "redis://redis:6379"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
