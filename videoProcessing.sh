@@ -11,7 +11,7 @@ input_video="/home/pelucapreb/${video_name}"
 processed_folder="/home/pelucapreb"
 output_video="${processed_folder}/${video_name%.*}_processed.mp4"
 
-gsutil cp "gs://almacenamiento-videos-nube/unprocessed/${video_name}" "${input_video}"
+gsutil cp "gs://almacenamiento2-videos-nube/unprocessed/${video_name}" "${input_video}"
 
 # Revisar si se descargo bien
 if [ ! -f "$input_video" ]; then
@@ -37,7 +37,7 @@ ffmpeg -i "$input_video" -i "$initial_frame" -i "$final_frame" \
 
 echo "The processed video has been saved as: $output_video"
 
-gsutil cp "${output_video}" "gs://almacenamiento-videos-nube/processed/" 
+gsutil cp "${output_video}" "gs://almacenamiento2-videos-nube/processed/" 
 
 rm -f "$input_video"
 rm -f "$output_video"
