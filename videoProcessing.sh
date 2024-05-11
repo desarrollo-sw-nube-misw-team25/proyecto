@@ -37,7 +37,7 @@ ffmpeg -i "$input_video" -i "$initial_frame" -i "$final_frame" \
 
 echo "The processed video has been saved as: $output_video"
 
-sudo gsutil cp "sudo ${output_video}" "gs://almacenamiento2-videos-nube/processed/" 
+sudo gsutil cp "${output_video}" "gs://almacenamiento2-videos-nube/processed/" 
 
 rm -f "$input_video"
 rm -f "$output_video"
