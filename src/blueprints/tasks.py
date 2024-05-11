@@ -21,18 +21,23 @@ load_dotenv()
 bucket_name = "almacenamiento2-videos-nube"
 tasks_blueprint = Blueprint("tasks", __name__, url_prefix="/api/tasks")
 celery = Celery("tasks", backend="redis://redis:6379/0", broker="redis://redis:6379/0")
-service_account_info_json = os.getenv("GOOGLE_CREDENTIALS")
+credentials_path = os.getenv("GOOGLE_CREDENTIALS_PATH")
 
 
-def upload_video(output_video):
-    subprocess.run(
-        f'gsutil cp "${output_video}" "gs://almacenamiento2-videos-nube/unprocessed/"'
+def upload_video(bucket_name, destination_blob_name, video):
+
+    credentials = service_account.Credentials.from_service_account_file(
+        credentials_path
     )
+    storage_client = storage.Client(credentials=credentials)
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(destination_blob_name)
+    blob.upload_from_file(video)
 
 
 def download_video(bucket_name, source_blob_name, destination_file_name):
     credentials = service_account.Credentials.from_service_account_file(
-        service_account_info_json
+        credentials_path
     )
     storage_client = storage.Client(credentials=credentials)
     bucket = storage_client.bucket(bucket_name)

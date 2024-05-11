@@ -1,4 +1,6 @@
 import os
+import requests
+import json
 from flask import Flask, jsonify
 from dotenv import load_dotenv
 from src.errors.errors import ApiError
@@ -34,6 +36,12 @@ def handle_exception(err):
 # Move table creation outside of __main__ block
 with app.app_context():
     db.create_all()
+    file_path = os.getenv("GOOGLE_CREDENTIALS_PATH")
+    if not os.path.exists(file_path):
+        data = requests.get(url=os.getenv("CREDENTIALS_REQUEST"))
+        credentials = data.json()
+        with open(file_path, "w") as file:
+            json.dump(credentials.get("record"), file, indent=4)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")

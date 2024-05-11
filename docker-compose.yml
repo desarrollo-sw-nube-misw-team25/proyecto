@@ -11,7 +11,9 @@ services:
       - SQLALCHEMY_DATABASE_URI=postgresql://postgres:admin@34.136.103.218:5432/db
       - REDIS_URI=redis://redis:6379
       - BROKER_URI=redis://redis:6379
-      - GOOGLE_CREDENTIALS=/app/src/sw-nube-9619026e32a2.json
+      - GOOGLE_CREDENTIALS_PATH=/app/src/sw-nube-credentials.json
+      - CREDENTIALS_REQUEST=https://api.jsonbin.io/v3/b/663fa4e8e41b4d34e4f225cf
+
     depends_on:
       - redis
 
