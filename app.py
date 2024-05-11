@@ -1,4 +1,3 @@
-from flask import  jsonify
 from google.cloud import pubsub_v1
 import subprocess
 
@@ -23,7 +22,6 @@ def process_video(video_id: pubsub_v1.subscriber.message.Message)->None:
             'error': e.stderr.decode()
         }
     video_id.ack()
-    return jsonify(response)
 
 streaming_pull_future=subscriber.subscribe(subscription_path,callback=process_video)
 
