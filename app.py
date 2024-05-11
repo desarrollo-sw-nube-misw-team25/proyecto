@@ -15,9 +15,8 @@ def process_video(message: pubsub_v1.subscriber.message.Message)->None:
     command = f"./videoProcessing.sh  {filename}"
     print(filename)
     try:
-        print("entre 1")
         result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        print("acabe")
+        
         response = {
             'status': 'ok',
             'output': result.stdout.decode()
