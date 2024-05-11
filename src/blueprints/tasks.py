@@ -124,12 +124,7 @@ def create_task():
     # Generate a unique ID for the video and create the filename
     video_uuid = uuid.uuid4()
     video_id = str(video_uuid)
-    filename = f"/app/videos/{video_id}.mp4"
-
-    try:
-        video.save(filename)
-    except Exception as e:
-        return {"error": str(e)}, 500
+    filename = f"unprocessed/{video_id}.mp4"
 
     # Generate timestamp
     timestamp = datetime.now()

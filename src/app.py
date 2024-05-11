@@ -15,7 +15,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("SQLALCHEMY_DATABASE_URI")
 app.config["REDIS_URI"] = "redis://redis:6379"
 app.config["BROKER_URI"] = "redis://redis:6379"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["JWT_SECRET_KEY"] = "your-secret-key"
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
 
 celery.conf.update(app.config)
 celery.main = app.import_name

@@ -13,6 +13,7 @@ services:
       - BROKER_URI=redis://redis:6379
       - GOOGLE_CREDENTIALS_PATH=/app/src/sw-nube-credentials.json
       - CREDENTIALS_REQUEST=https://api.jsonbin.io/v3/b/663fa4e8e41b4d34e4f225cf
+      - JWT_SECRET_KEY=your-secret-key
 
     depends_on:
       - redis
