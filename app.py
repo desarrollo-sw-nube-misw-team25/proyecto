@@ -1,10 +1,13 @@
-from flask import Flask, request, jsonify
-import errors
+from flask import  jsonify
+from google.cloud import pubsub_v1
 import subprocess
-app = Flask(__name__)
 
-@app.route("/procesarVideo/<video_id>", methods=["POST"])
-def process_video(video_id):
+project_id="sw-nube"
+subscription_id="Video_data-sub"
+subscriber=pubsub_v1.SubscriberClient()
+subscription_path=subscriber.subscription_path(project_id,subscription_id)
+#@app.route("/procesarVideo/<video_id>", methods=["POST"])
+def process_video(video_id: pubsub_v1.subscriber.message.Message)->None:
    
     filename = f"{video_id}.mp4"
     command = f"./videoProcessing.sh  {filename}"
@@ -19,7 +22,15 @@ def process_video(video_id):
             'status': 'error',
             'error': e.stderr.decode()
         }
-    
+    video_id.ack()
     return jsonify(response)
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+
+streaming_pull_future=subscriber.subscribe(subscription_path,callback=process_video)
+
+with subscriber:
+    try:
+        streaming_pull_future.result()
+    except Exception:
+        streaming_pull_future.cancel()
+        streaming_pull_future.result()
+
