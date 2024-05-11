@@ -13,6 +13,7 @@ def process_video(message: pubsub_v1.subscriber.message.Message)->None:
     print(video_id)
     filename = f"{video_id}.mp4"
     command = f"./videoProcessing.sh  {filename}"
+
     try:
         result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         response = {
@@ -24,6 +25,8 @@ def process_video(message: pubsub_v1.subscriber.message.Message)->None:
             'status': 'error',
             'error': e.stderr.decode()
         }
+    except  Exception as e:
+        raise(e)
     message.ack()
 
 streaming_pull_future=subscriber.subscribe(subscription_path,callback=process_video)
@@ -31,7 +34,7 @@ streaming_pull_future=subscriber.subscribe(subscription_path,callback=process_vi
 with subscriber:
     try:
         streaming_pull_future.result()
-    except Exception:
+    except Exception as e:
         streaming_pull_future.cancel()
         streaming_pull_future.result()
-
+        raise(e)
