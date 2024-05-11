@@ -6,9 +6,11 @@ project_id="sw-nube"
 subscription_id="Video_data-sub"
 subscriber=pubsub_v1.SubscriberClient()
 subscription_path=subscriber.subscription_path(project_id,subscription_id)
+
 #@app.route("/procesarVideo/<video_id>", methods=["POST"])
-def process_video(video_id: pubsub_v1.subscriber.message.Message)->None:
-    print("hola")
+def process_video(message: pubsub_v1.subscriber.message.Message)->None:
+    video_id=message.data.decode("utf-8")
+    print(video_id)
     filename = f"{video_id}.mp4"
     command = f"./videoProcessing.sh  {filename}"
     try:
@@ -28,7 +30,7 @@ streaming_pull_future=subscriber.subscribe(subscription_path,callback=process_vi
 
 with subscriber:
     try:
-        streaming_pull_future.result(timeout=timeout)
+        streaming_pull_future.result()
     except Exception:
         streaming_pull_future.cancel()
         streaming_pull_future.result()
