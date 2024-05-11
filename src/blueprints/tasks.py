@@ -67,7 +67,6 @@ def post_task():
 @tasks_blueprint.route("/", methods=["GET"])
 @jwt_required()
 def get_all_task():
-    user_id = get_jwt_identity()
     max_results = request.args.get("max", type=int)
     order = request.args.get("order", type=int, default=0)
     tasks = get_all_tasks(max_results, order)
@@ -83,7 +82,6 @@ def get_all_task():
 @tasks_blueprint.route("/<id_task>", methods=["GET"])
 @jwt_required()
 def get_task(id_task):
-    user_id = get_jwt_identity()
     task = get_task_id(id_task)
     if task:
         return jsonify(task), 200
@@ -99,7 +97,6 @@ def get_task(id_task):
 @tasks_blueprint.route("/<id_task>", methods=["DELETE"])
 @jwt_required()
 def delete_task(id_task):
-    user_id = get_jwt_identity()
 
     result = delete_task_id(id_task)
     return result
@@ -119,7 +116,6 @@ def process_video(id_video):
 @tasks_blueprint.route("/", methods=["POST"])
 @jwt_required()
 def create_task():
-    user_id = get_jwt_identity()
     # Retrieve the video file from the request
     video = request.files.get("video")
     if not video:
@@ -141,15 +137,13 @@ def create_task():
     # The initial status of the video
     status = "uploaded"
 
-    upload_video(filename)
+    upload_video(bucket_name, filename, video)
 
     # The video download url
     download_url = "unprocessed"
 
     # Save to data base
-    stored_video = UploadVideo(
-        video_uuid, filename, timestamp, status, download_url
-    ).execute()
+    UploadVideo(video_uuid, filename, timestamp, status, download_url).execute()
     result = process_video.delay(video_id)
     print("Task ID:", result.id)
     # Return confirmation message
