@@ -1,4 +1,3 @@
-import base64
 from dotenv import load_dotenv
 from flask import Blueprint, json, logging, request, jsonify
 from flask_jwt_extended import get_jwt_identity, jwt_required
@@ -9,11 +8,10 @@ from ..commands.task_commands.delete_task import delete_task_id
 from src.commands.task_commands.upload_video import UploadVideo
 import os
 import uuid
-import subprocess
 from datetime import datetime
 from celery import Celery
 import requests
-from google.cloud import storage
+from google.cloud import storage, pubsub_v1
 from google.oauth2 import service_account
 
 
@@ -25,7 +23,6 @@ credentials_path = os.getenv("GOOGLE_CREDENTIALS_PATH")
 
 
 def upload_video(bucket_name, destination_blob_name, video):
-
     credentials = service_account.Credentials.from_service_account_file(
         credentials_path
     )
@@ -102,15 +99,17 @@ def delete_task(id_task):
     return result
 
 
-@celery.task()
-def process_video(id_video):
-    video_id = id_video
-
+def process_video(video_id):
+    credentials = service_account.Credentials.from_service_account_file(
+        credentials_path
+    )
     url = f"http://34.71.11.68:5000/procesarVideo/{video_id}"
-
-    response = requests.post(url)
-
-    print(response)
+    # requests.post(url)
+    # Call publisher
+    publisher = pubsub_v1.PublisherClient(credentials=credentials)
+    topic_name = "projects/sw-nube/topics/Video_data"
+    future = publisher.publish(topic_name, video_id.encode("utf-8"))
+    future.result()
 
 
 @tasks_blueprint.route("/", methods=["POST"])
@@ -139,8 +138,7 @@ def create_task():
 
     # Save to data base
     UploadVideo(video_uuid, filename, timestamp, status, download_url).execute()
-    result = process_video.delay(video_id)
-    print("Task ID:", result.id)
+    process_video(video_id)
     # Return confirmation message
     return (
         jsonify(

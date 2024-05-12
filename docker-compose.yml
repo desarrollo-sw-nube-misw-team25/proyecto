@@ -9,29 +9,9 @@ services:
       - "5001:5000"
     environment:
       - SQLALCHEMY_DATABASE_URI=postgresql://postgres:admin@34.136.103.218:5432/db
-      - REDIS_URI=redis://redis:6379
-      - BROKER_URI=redis://redis:6379
       - GOOGLE_CREDENTIALS_PATH=/app/src/sw-nube-credentials.json
       - CREDENTIALS_REQUEST=https://api.jsonbin.io/v3/b/663fa4e8e41b4d34e4f225cf
       - JWT_SECRET_KEY=your-secret-key
-
-    depends_on:
-      - redis
-
-  redis:
-    image: redis:latest
-    ports:
-      - "6379:6379"
-
-  worker:
-    build: .
-    depends_on:
-      - redis
-    environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
-    command:
-      ["celery", "-A", "src.blueprints.tasks", "worker", "--loglevel=info"]
 
   nginx:
     image: nginx:latest
