@@ -15,11 +15,8 @@ def process_video(message: pubsub_v1.subscriber.message.Message)->None:
     command = f"./videoProcessing.sh  {filename}"
     print(filename)
     try:
-        result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         print("Video processing  finished succesfully [+]")
-    
-    except subprocess.CalledProcessError as e:
-        print("Someting went wrong [:(]")
     except  Exception as e:
         raise(e)
     message.ack()
