@@ -103,8 +103,6 @@ def process_video(video_id):
     credentials = service_account.Credentials.from_service_account_file(
         credentials_path
     )
-    url = f"http://34.71.11.68:5000/procesarVideo/{video_id}"
-    # requests.post(url)
     # Call publisher
     publisher = pubsub_v1.PublisherClient(credentials=credentials)
     topic_name = "projects/sw-nube/topics/Video_data"
