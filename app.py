@@ -28,7 +28,7 @@ def process_video(message: pubsub_v1.subscriber.message.Message)->None:
         }
     except  Exception as e:
         raise(e)
-
+    message.ack()
 streaming_pull_future=subscriber.subscribe(subscription_path,callback=process_video)
 
 with subscriber:
