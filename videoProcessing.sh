@@ -12,7 +12,7 @@ processed_folder="/home/ubuntu"
 output_video="${processed_folder}/${video_name%.*}_processed.mp4"
 
 # Fetch the video from S3
-aws s3 cp "s3://nubeandesgrupocool/unprocessed/${video_name}" "$input_video"
+aws s3 cp "s3://worker-bucket-team25/unprocessed/${video_name}" "$input_video"
 
 # Check if download was successful
 if [ ! -f "$input_video" ]; then
@@ -44,7 +44,7 @@ ffmpeg -i "$input_video" -i "$initial_frame" -i "$final_frame" \
 echo "The processed video has been saved as: $output_video"
 
 # Upload processed video to S3
-aws s3 cp "$output_video" "s3://nubeandesgrupocool/processed/"
+aws s3 cp "$output_video" "s3://worker-bucket-team25/processed/"
 
 # Delete local copies of the video
 rm "$input_video"
