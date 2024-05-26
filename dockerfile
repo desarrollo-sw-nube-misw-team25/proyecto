@@ -16,4 +16,4 @@ RUN dos2unix /app/videoProcessing.sh && \
 
 EXPOSE 80
 
-CMD ["python", "app.py"]
+CMD ["python3", "app.py"]
