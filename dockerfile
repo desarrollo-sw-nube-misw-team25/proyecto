@@ -13,16 +13,17 @@ RUN apt-get update && apt-get install -y \
     lsb-release \
     ffmpeg \
     dos2unix \
-    && rm -rf /var/lib/apt/lists/*  
+    apt-transport-https \
+    ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+# Download and install the Google Cloud SDK
+RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-476.0.0-linux-x86_64.tar.gz \
+    && tar -xf google-cloud-cli-476.0.0-linux-x86_64.tar.gz \
+    && ./google-cloud-sdk/install.sh --quiet --additional-components kubectl
 
-RUN apt-get install -y apt-transport-https ca-certificates
-
-RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
-
-# Update the package list and install the Google Cloud SDK
-RUN apt-get install -y google-cloud-sdk
+# Set path environment to include Google Cloud SDK binaries
+ENV PATH $PATH:/app/google-cloud-sdk/bin
 
 RUN dos2unix /app/videoProcessing.sh && \
     chmod +x /app/videoProcessing.sh
