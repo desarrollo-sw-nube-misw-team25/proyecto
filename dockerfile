@@ -11,8 +11,9 @@ RUN apt-get update && apt-get install -y \
     curl \
     gnupg \
     lsb-release \
-    apt-get install -y ffmpeg dos2unix && \
-    rm -rf /var/lib/apt/lists/* # Clean up to reduce image size
+    ffmpeg \
+    dos2unix \
+    && rm -rf /var/lib/apt/lists/*  
 
 RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 
