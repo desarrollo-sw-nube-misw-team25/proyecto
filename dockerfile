@@ -28,6 +28,8 @@ ENV PATH $PATH:/app/google-cloud-sdk/bin
 RUN dos2unix /app/videoProcessing.sh && \
     chmod +x /app/videoProcessing.sh
 
+EXPOSE 8080
+
 ENV GOOGLE_APPLICATION_CREDENTIALS=/app/credentials.json
 
 CMD ["python3", "app.py"]
