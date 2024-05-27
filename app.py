@@ -1,12 +1,20 @@
 from google.cloud import pubsub_v1
+from google.oauth2 import service_account
 import subprocess
+import requests
+
+
+def fetch_credentials(url):
+    response = requests.get(url)
+    response.raise_for_status()  
 
 timeout = 5.0
 project_id="sw-nube"
 subscription_id="Video_data-sub"
-subscriber=pubsub_v1.SubscriberClient()
+credentials_info = fetch_credentials('https://api.jsonbin.io/v3/b/663fa4e8e41b4d34e4f225cf')
+credentials = service_account.Credentials.from_service_account_info(credentials_info)
+subscriber = pubsub_v1.SubscriberClient(credentials=credentials)
 subscription_path=subscriber.subscription_path(project_id,subscription_id)
-
 #@app.route("/procesarVideo/<video_id>", methods=["POST"])
 def process_video(message: pubsub_v1.subscriber.message.Message)->None:
     print("Video processing starting [+]")
