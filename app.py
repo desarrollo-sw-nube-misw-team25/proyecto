@@ -6,7 +6,8 @@ import requests
 
 def fetch_credentials(url):
     response = requests.get(url)
-    response.raise_for_status()  
+    response.raise_for_status()
+    return response.json()['record'] 
 
 timeout = 5.0
 project_id="sw-nube"
