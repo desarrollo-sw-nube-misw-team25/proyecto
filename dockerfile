@@ -7,12 +7,16 @@ COPY . /app
 
 RUN pip install --no-cache-dir google-cloud-pubsub
 
-RUN apt-get update && \
+RUN apt-get update && apt-get install -y \
+    curl \
+    gnupg \
+    lsb-release \
     apt-get install -y ffmpeg dos2unix && \
     rm -rf /var/lib/apt/lists/* # Clean up to reduce image size
 
 RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 
+RUN apt-get install -y apt-transport-https ca-certificates
 
 RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
 
