@@ -2,6 +2,14 @@ from google.cloud import pubsub_v1
 from google.oauth2 import service_account
 import subprocess
 import requests
+from flask import Flask
+import threading
+app = Flask(__name__)
+
+@app.route('/healthz')
+def health_check():
+    return 'OK', 200
+
 
 
 def fetch_credentials(url):
@@ -40,12 +48,14 @@ def process_video(message: pubsub_v1.subscriber.message.Message)->None:
     except  Exception as e:
         raise(e)
     message.ack()
-streaming_pull_future=subscriber.subscribe(subscription_path,callback=process_video)
 
-with subscriber:
-    try:
-        streaming_pull_future.result()
-    except Exception as e:
-        streaming_pull_future.cancel()
-        streaming_pull_future.result()
-        raise(e)
+def listen_for_messages():
+    streaming_pull_future = subscriber.subscribe(subscription_path, callback=process_video)
+    with subscriber:
+        try:
+            streaming_pull_future.result()
+        except Exception as e:
+            streaming_pull_future.cancel()
+            raise e
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)

@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY . /app
 
-RUN pip install --no-cache-dir google-cloud-pubsub
+RUN pip install --no-cache-dir flask google-cloud-pubsub
 
 RUN apt-get update && apt-get install -y \
     curl \
